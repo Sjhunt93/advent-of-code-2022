@@ -63,30 +63,18 @@ with open("input.txt") as f:
         amount = int(amount)
         print(d, amount)
         
-        if d == "L":
-            for i in range(0, amount):
+        for i in range(0, amount):
+            if d == "L":
                 rope[0].x -= 1
-                rope = iterate_rope(rope)
-                positions.append([rope[9].x, rope[9].y])
-
-        elif d == "R":
-            for i in range(0, amount):
+            elif d == "R":
                 rope[0].x += 1
-                rope = iterate_rope(rope)
-                positions.append([rope[9].x, rope[9].y])
-
-        elif d == "U":
-            for i in range(0, amount):
-                rope[0].y += 1
-                rope = iterate_rope(rope)
-                positions.append([rope[9].x, rope[9].y])
-
-        elif d == "D":
-            for i in range(0, amount):
+            elif d == "U":
+                rope[0].y += 1 
+            elif d == "D":
                 rope[0].y -= 1
-                rope = iterate_rope(rope)
-                positions.append([rope[9].x, rope[9].y])
-            
+
+            rope = iterate_rope(rope)
+            positions.append([rope[9].x, rope[9].y])
 
         print(rope)
 
