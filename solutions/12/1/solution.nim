@@ -117,16 +117,17 @@ while max >= 0:
 
     let z = int(grid[point.y][point.x])
     if point.x > 0:
-        goLeft = z >= (int(grid[point.y][point.x-1]) - 1) and not (grid[point.y][point.x-1] in [NO_ENTRY, LAST])
+        goLeft = (int(grid[point.y][point.x-1]) - z) <= 1 and not (grid[point.y][point.x-1] in [NO_ENTRY, LAST])
     if point.x < sizeX-1:
-        goRight = z >= (int(grid[point.y][point.x+1]) - 1) and not (grid[point.y][point.x+1] in [NO_ENTRY, LAST])
+        goRight =  (int(grid[point.y][point.x+1]) - z) <= 1 and not (grid[point.y][point.x+1] in [NO_ENTRY, LAST])
     if point.y > 0:
-        goUp = z >= (int(grid[point.y-1][point.x]) - 1) and not (grid[point.y-1][point.x] in [NO_ENTRY, LAST])
+        goUp = (int(grid[point.y-1][point.x]) - z) <= 1 and not (grid[point.y-1][point.x] in [NO_ENTRY, LAST])
     if point.y < sizeY-1:
-        goDown = z >= (int(grid[point.y+1][point.x]) - 1) and not (grid[point.y+1][point.x] in [NO_ENTRY, LAST])
+        goDown = (int(grid[point.y+1][point.x]) - z) <= 1 and not (grid[point.y+1][point.x] in [NO_ENTRY, LAST])
 
     if not (goLeft or goRight or goUp or goDown):
-        # rollback
+        # rollback]
+        # at some point we would hit 0
         echo "rollback"
         grid[point.y][point.x] = NO_ENTRY
         # point.x = progress[-1].x
@@ -137,7 +138,9 @@ while max >= 0:
     else:
         grid[point.y][point.x] = LAST
 
-
+        # need to append the list of results to just a string.
+        # while exhasuted
+        # then we can say if 'newstring' not in attempts that blocks multiple attempts
         if goRight:
             point.x += 1
         elif goLeft:
