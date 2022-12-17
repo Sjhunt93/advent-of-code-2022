@@ -24,12 +24,16 @@ print(min(ys), " -- ", max(ys))
 
 grid = []
 
-for rows in range(0, max(ys)+1):
-    grid.append(["." for x in range(min(xs), max(xs)+1)])
+for rows in range(0, max(ys)+2):
+    #grid.append(["." for x in range(min(xs), max(xs)+1)])
+    grid.append(["." for x in range(0, 1000)])
+
+grid.append(["#" for x in range(0, 1000)])
+
+Y_OFFSET = 0
+X_OFFSET = 0#min(xs)
 
 
-Y_OFFSET = 0 # not used but could be
-X_OFFSET = min(xs)
 
 for todraw in rocks:
     for cindex in range(1, len(todraw)):
@@ -42,9 +46,10 @@ for todraw in rocks:
         if abs(x1-x2) == 0: # draw vertical rocks
             for y in range(min([y1, y2]), max([y1, y2])+1):
                 grid[y-Y_OFFSET][x1-X_OFFSET] = "#"
-        if abs(y1-y2) == 0: # draw horizontal rocks
+        if abs(y1-y2) == 0: # draw vertical rocks
             for x in range(min([x1, x2]), max([x1, x2])+1):
                 grid[y1-Y_OFFSET][x-X_OFFSET] = "#"
+
 
 def debug_print():
     for row in grid:
@@ -59,26 +64,21 @@ sand_castles = 0
 for i in range(0, 500000):
     sand_x = 500
     sand_y = 0
-    try:
-        while True:
-            if grid[sand_y+1][sand_x-X_OFFSET] == ".":
-                sand_y += 1
-            elif grid[sand_y+1][(sand_x-X_OFFSET)-1] == ".":
-                sand_y += 1
-                sand_x -= 1
-            elif grid[sand_y+1][(sand_x-X_OFFSET)+1] == ".":
-                sand_y += 1
-                sand_x += 1
-            else:
-                grid[sand_y][sand_x-X_OFFSET] = "o"
-                sand_castles += 1
-                break
-    # bit lazy but meh
-    except Exception as e:
-        debug_print()
-        print(sand_castles)
-        break
-
     
+    while True:
+        if grid[sand_y+1][sand_x-X_OFFSET] == ".":
+            sand_y += 1
+        elif grid[sand_y+1][(sand_x-X_OFFSET)-1] == ".":
+            sand_y += 1
+            sand_x -= 1
+        elif grid[sand_y+1][(sand_x-X_OFFSET)+1] == ".":
+            sand_y += 1
+            sand_x += 1
+        else:
+            if sand_y == 0:
+                print(sand_castles+1)
+                exit()
 
-
+            grid[sand_y][sand_x-X_OFFSET] = "o"
+            sand_castles += 1
+            break
