@@ -4,8 +4,8 @@ from copy import deepcopy
 
 to_evaluate = {}
 
-with open("input.txt") as f:
 #with open("test.txt") as f:
+with open("input.txt") as f:
     lines = f.readlines()
     for l in lines:
         l = l.replace("\n", "")
@@ -19,6 +19,24 @@ with open("input.txt") as f:
             pass
         
 
+def iterate_k(key):
+    for i in "*-+/":
+        if i in key:
+            x, y = key.split(i)
+            x = x.strip()
+            y = y.strip()
+            if isinstance(x, str) and x != "humn":
+                if x in to_evaluate and isinstance(to_evaluate[x], float):
+                    x = to_evaluate[x] # resolved
+                else:
+                    x = iterate_k(to_evaluate[x])
+            if isinstance(y, str) and y != "humn":
+                if y in to_evaluate and isinstance(to_evaluate[y], float):
+                    y = to_evaluate[y] # resolved
+                else:
+                    y = iterate_k(to_evaluate[y])
+            return f"({str(x)} {i} {str(y)})"
+
 
 while not isinstance(to_evaluate["root"], float):
     evals = 0
@@ -26,7 +44,6 @@ while not isinstance(to_evaluate["root"], float):
         if not isinstance(value, float):
             
             
-            #t = re.split(r"(\w+) ([*\/\-+]) (\w+)", value)
             t = re.match(r"(\w+) ([*\/\-+]) (\w+)", value)
             #print(t.group(1), t.group(2), t.group(3))
             k1 = t.group(1)
@@ -40,7 +57,7 @@ while not isinstance(to_evaluate["root"], float):
                 if key == "root":
                     print("Root", to_evaluate[k1], "  ~~ ", to_evaluate[k2], " ", to_evaluate[k1]-to_evaluate[k2])
                 res = eval(f"{to_evaluate[k1]} {op} {to_evaluate[k2]}")
-                #print(res)
+                
                 to_evaluate[key] = res
                 evals += 1
     
@@ -61,3 +78,21 @@ while not isinstance(to_evaluate["root"], float):
 
 
 print(to_evaluate["root"])
+
+a = iterate_k(to_evaluate["hsdb"])
+print(a)#, eval(a))
+
+# 34588563455325.0
+
+for i in range(3059361890000, 90177205134225):
+    sum = eval(a.replace("humn", str(i)))
+    #print("done", abs(34588563455325.0 - sum))
+
+    if sum - 34588563455325.0 < 0:
+        print(i, sum)
+        assert False
+    #if i % 1000000 == 0:
+    print("done", sum - 34588563455325.0, i)
+    if sum == 34588563455325.0:
+        print("done", abs(34588563455325.0 - sum), i)
+        break
