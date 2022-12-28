@@ -120,7 +120,7 @@ int main()
                 int fIndex = bufferOffset + i;
                 
                 //edge detection
-                if (CHECK_BIT(buffer.lines[i], bitToCheck) || CHECK_BIT(field[fIndex], bitToCheck)) {
+                if (CHECK_BIT(buffer.lines[i], bitToCheck)) {// || CHECK_BIT(field[fIndex], bitToCheck)) {
                     move = false;
                 }
                  
@@ -203,15 +203,15 @@ int main()
         if (emptyRows < 3) {
             int toAdd = 3-emptyRows;
             field.push_back(0);
-            std::cout << "adding empty rows\n";
+            // std::cout << "adding empty rows\n";
         }
         else {
             int toRemove = emptyRows-3;
-            std::cout << "empty rows: " << emptyRows << " and to remove " << toRemove << "\n";
+            // std::cout << "empty rows: " << emptyRows << " and to remove " << toRemove << "\n";
             while (toRemove > 0)
             {
                 field.pop_back();
-                std::cout << "removing\n";
+                
                 toRemove--;
             }
         }
@@ -228,37 +228,7 @@ int main()
     
     }
 
-    std::cout << field.size() << "\n";
-    // // std::ifstream infile("test.txt");
-    // std::ifstream infile("test.txt");
-
-    // std::string line;
-    // std::smatch matches;
-
-    // std::vector<Node> nodes;
-    // while (std::getline(infile, line))
-    // {
-    //     std::cout << line << "\n";
-    //     if (std::regex_search(line, matches, std::regex(R"(Valve (\w\w) has flow rate=(\d*); tunnels lead to valves (.*))"))) {
-    //         auto valveName = matches[1];
-    //         auto flowRate = matches[2];
-    //         std::string rm = matches[3];
-
-    //         std::smatch match2;
-    //         std::regex r(R"(\w\w)");
-    //         Node node;
-    //         node.flowRate = std::stoi(flowRate);
-    //         node.name = valveName;
-
-    //         while (std::regex_search(rm, match2, r)) {
-    //             node.toConnect.push_back(match2.str(0));
-    //             std::cout << "Matched string is " << match2.str(0) << std::endl;
-    //             rm = match2.suffix().str();
-    //         }
-    //         nodes.push_back(node);
-    //     }  
-    // }
-    
+    std::cout << field.size()-4 << "\n";
 
     
 }
