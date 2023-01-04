@@ -65,22 +65,23 @@ with open("test.txt") as f:
 
 
 
-elf = [0, 0]
+elf = [0, -1]
 exit = [xsize-1, ysize]
+print(exit)
 
 positions = [[1,0], [-1, 0], [0, 1], [0, -1]]
 
 #while not is_free(elf[0], elf[1], blizzards):
 # cycle()
 # print_blizzard()
-while not is_free(0, 0, blizzards):
-    cycle()
-    print_blizzard()
+# while not is_free(0, 0, blizzards):
+#     cycle()
+#     print_blizzard()
 
 # cycle()
 # blizzards_time = [deepcopy(blizzards)]
 
-blizzards_time = []
+blizzards_time = [[]]
 visitedSet = set()
 
 print_blizzard()
@@ -88,7 +89,7 @@ while elf != exit:
 
     queue = []
     visitedSet.add(tuple(elf))
-    queue.append([elf, 0])
+    queue.append([elf, 1])
 
     while queue:
         elf, time = queue[0]
@@ -96,35 +97,41 @@ while elf != exit:
         if elf == exit:
             break
         
-        print(time, len(blizzards_time))
+        # print(time, len(blizzards_time))
         if time >= len(blizzards_time):
+            if time > 5:
+                blizzards_time[time-5] = []    
+            print("Cycling a step", len(blizzards_time), elf)
             cycle()
-            print_blizzard()
+            # print_blizzard()
             blizzards_time.append(deepcopy(blizzards))
 
         valid_ps =  [[elf[0] + p[0], elf[1] + p[1]] for p in positions]
         
         did_move = False
         for p in valid_ps:
-            print(p, time)
+            # print(p, time)
             if p == exit:
-                print(time+2)
+                print("Finished", time+2)
                 assert False
             # need to check here... (is size valid or no)
             if p[0] >= 0 and p[0] < xsize and p[1] >=0 and p[1] < ysize:
-                #if tuple(p) not in visitedSet or p == elf:
-                if is_free(p[0], p[1], blizzards_time[time]):
-                    
-                    #visitedSet.add(tuple(p))
-                    queue.append([p, time+1])
-                    did_move = True
-                else:
-                    print("Cannot go")
+                # if tuple(p) not in visitedSet or p == elf:
+                    if is_free(p[0], p[1], blizzards_time[time]):
+                        
+                        # visitedSet.add(tuple(p))
+                        if [p, time+1] not in queue:
+                            queue.append([p, time+1])
+                            did_move = True
+                    else:
+                        # print("Cannot go")
+                        pass
 
         if not did_move:
-            queue.append([elf, time+1])
+            if [elf, time+1] not in queue:
+                queue.append([elf, time+1])
                     
-
+    assert False
     
 
 
