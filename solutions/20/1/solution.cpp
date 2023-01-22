@@ -13,13 +13,13 @@
 struct Node {
     Node * prev{nullptr};
     Node * next{nullptr};
-    int value{0};
+    int64_t value{0};
     int position{-1};
 
-    static void moveNode(Node * nodeStart, const int size)
+    static void moveNode(Node * nodeStart, const int64_t size)
     {
         const bool isStart = nodeStart->position == 0;
-        int toMove = nodeStart->value % (size-1);
+        int64_t toMove = nodeStart->value % (size-1);
         if (toMove == 0) {
             return;
         }
@@ -102,12 +102,13 @@ int main()
     // std::smatch matches;
     std::string line;
     std::vector<Node> nodes;
-    std::vector<int> original;
-    std::queue<int> toprocess;
+    std::vector<int64_t> original;
+    std::queue<int64_t> toprocess;
     while (std::getline(infile, line))
     {
         std::cout << line << "\n";
-        int num = std::stoi(line);
+        int64_t num = std::stoi(line);
+        num *= 811589153;
         std::cout << num << "\n";
         original.push_back(num);
         toprocess.push(num);
@@ -124,7 +125,7 @@ int main()
     while (!toprocess.empty())
     {
         std::cout << "Starting: " << toprocess.size() << "\n";
-        int a = toprocess.front(); toprocess.pop();
+        int64_t a = toprocess.front(); toprocess.pop();
 
         // Node * old = current; // temp reference to old
         Node * newnode = new Node();
@@ -145,6 +146,7 @@ int main()
     Node * debug = start;
 
     std::cout << "\n\n";
+    for (int rounds = 0; rounds < 10; rounds++ ) {
     for (auto a : orders) {
         // std::cout << a->value << "\n";
         Node::moveNode(a, orders.size());
@@ -168,13 +170,14 @@ int main()
         // std::cout <<"\n";
     
     }
+    }
 
     while (debug->value != 0)
     {
         debug = debug->next;
     }
     std::cout << debug->value << "\n";
-    int score = 0;
+    int64_t score = 0;
 
     for (int j = 0; j < 3; j++) {
         for (int i = 0; i < 1000; i++)
