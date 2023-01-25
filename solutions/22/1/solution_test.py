@@ -2,6 +2,7 @@ import re
 coordinates = []
 
 COMPAS = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+DIRS = ">v<^"
 
 def print_coord():
     for row in coordinates:
@@ -87,7 +88,7 @@ with open("test.txt") as f:
             elif coordinates[new_pos[0]][new_pos[1]] == " ":
                 pass
             position = new_pos
-            coordinates[position[0]][position[1]] = "@"
+            coordinates[position[0]][position[1]] = DIRS[c_inc]
         
         print_coord()
         if rot == "R":
