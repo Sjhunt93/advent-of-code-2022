@@ -30,10 +30,16 @@ Do a solution in each of these languages
 - R
 
 
-#https://nim-lang.org/
+# Links 
+https://nim-lang.org/
+https://regex101.com/
+https://ziglang.org/
+https://odin-lang.org/
 
 # Learnings
 
 In python tabs really make the difference, one wrong indent and it fails silently!
 In C types matter so much more than you can imagine, at least an int is an int and not a strings (looking at you python!)
 Lua is kinda odd, I cant see what advantage is has over python or ruby. The fact it has no += is really anyoing
+
+Consider writing tests before staring with some solutions. Day 22 was a good example of this.
