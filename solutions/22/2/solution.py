@@ -103,23 +103,6 @@ def check_boundries(position, new_pos, increment):
 
     return [y, x], new_inc
 
-
-def plot_border():
-
-
-    corners = []
-    for y in range(0, len(coordinates)-1):
-        for x in range(0, len(coordinates[0])-1):
-            if coordinates[y][x] == " ":
-                quad = [[y-1, x+1], [y+1, x-1], [y+1, x+1], [y-1, x-1]]
-                for q in quad:
-                    if q[0] >= 0 and q[0] < y_size:
-                        if q[1] >= 0 and q[1] < x_size:
-                            if coordinates[q[0]][q[1]] == ".":
-                                coordinates[y][x] = "+"
-            
-    print(len(corners))
-
 #           A
 #   B   C   D
 #           E   F
@@ -128,92 +111,6 @@ def plot_border():
 #   C
 # D E
 # F
-
-def do_blank():
-    for i in range(0, 150):
-        new_pos, _ = check_boundries([i, 51], [i, 50], 0)
-        coordinates[new_pos[0]][new_pos[1]] = "8"
-        new_pos, _ = check_boundries([i, 98], [i, 99], 0)
-        coordinates[new_pos[0]][new_pos[1]] = "8"
-
-
-def fill_all():
-    prev = [0, 50]
-    for i in range(0, 150):
-        for x in range(50, 100):
-            c = [i, x]
-            new_pos, _ = check_boundries(prev, c, 0)
-            coordinates[new_pos[0]][new_pos[1]] = "*"
-            prev = c
-    
-    prev = [0, 100]
-    for i in range(0, 50):
-        for x in range(100, 150):
-            c = [i, x]
-            new_pos, _ = check_boundries(prev, c, 0)
-            coordinates[new_pos[0]][new_pos[1]] = "*"
-            prev = c
-
-    prev = [100, 0]
-    for i in range(100, 200):
-        for x in range(0, 50):
-            c = [i, x]
-            new_pos, _ = check_boundries(prev, c, 0)
-            coordinates[new_pos[0]][new_pos[1]] = "*"
-            prev = c
-
-
-def do_A():
-    for i in range(0, 50):
-        new_pos, _ = check_boundries([i, 50], [i, 49], 0)
-        coordinates[new_pos[0]][new_pos[1]] = "A"
-        new_pos, _ = check_boundries([0, 50+i], [-1, 50+i], 0)
-        coordinates[new_pos[0]][new_pos[1]] = "A"
-
-def do_B():
-    for i in range(0, 50):
-        new_pos, _ = check_boundries([i, 149], [i, 150], 0)
-        coordinates[new_pos[0]][new_pos[1]] = "B"
-        new_pos, _ = check_boundries([0, 100+i], [-1, 100+i], 0) # top
-        coordinates[new_pos[0]][new_pos[1]] = "B"
-        new_pos, _ = check_boundries([49, 100+i], [50, 100+i], 0) # bottoms
-        coordinates[new_pos[0]][new_pos[1]] = "B"
-
-def do_C():
-    for i in range(50, 100):
-        new_pos, _ = check_boundries([i, 50], [i, 49], 0) # left
-        coordinates[new_pos[0]][new_pos[1]] = "C"
-
-        new_pos, _ = check_boundries([i, 99], [i, 100], 0) # right
-        coordinates[new_pos[0]][new_pos[1]] = "C"
-
-def do_D():
-    for i in range(0, 50):
-        new_pos, _ = check_boundries([i+100, 0], [i+100, -1], 0) # left
-        coordinates[new_pos[0]][new_pos[1]] = "D"
-
-        new_pos, _ = check_boundries([100, i], [99, i], 0) # top
-        coordinates[new_pos[0]][new_pos[1]] = "D"
-
-def do_E():
-    for i in range(0, 50):
-        new_pos, _ = check_boundries([i+100, 99], [i+100, 100], 0) # right
-        coordinates[new_pos[0]][new_pos[1]] = "E"
-
-        new_pos, _ = check_boundries([149, i+50], [150, i+50], 0) # bottom
-        coordinates[new_pos[0]][new_pos[1]] = "E"
-
-def do_F():
-    # left, bottom right
-    for i in range(0, 50):
-        new_pos, _ = check_boundries([i+150, 0], [i+150, -1], 0) # left
-        coordinates[new_pos[0]][new_pos[1]] = "F"
-
-        new_pos, _ = check_boundries([199, i], [200, i], 0) # bottom
-        coordinates[new_pos[0]][new_pos[1]] = "F"
-
-        new_pos, _ = check_boundries([i+150, 49], [i+150, 50], 0) # right
-        coordinates[new_pos[0]][new_pos[1]] = "F"
 
 
 with open("input.txt") as f:
@@ -228,68 +125,40 @@ with open("input.txt") as f:
     coordinates = [list(line) for y in range(0, y_size)]
     
     for y, row in enumerate(glines):
-        # print(y, row)
         for x, c in enumerate(row):
-            
             if c in ".#":
-                coordinates[y][x] = c#.replace("#", ".")
+                coordinates[y][x] = c
 
-    # print(coordinates)
-    #plot_border()
-    # fill_all()
-    # do_A()
-    # do_B()
-    # do_C()
-    # do_D()
-    # do_E()
-    # do_F()
-    # print_coord()
-    # exit()
-    
-    
 
     position = [0, glines[0].find(".")]
-    
     items = [int(x) for x in re.split(r"[LR]", code)]
     rotations = re.split(r"\d+", code)[1:]
     
 
     increment = [0, 1]
     c_inc = 0
-    for steps, rot in zip(items, rotations):
-        print(steps, rot)
+    for steps, rotation in zip(items, rotations):
+        
         while steps:
             
-            new_pos = [(position[0] + increment[0]), (position[1] + increment[1])]
-            
             steps -= 1
+
+            new_pos = [(position[0] + increment[0]), (position[1] + increment[1])]
             new_pos, new_inc = check_boundries(position, new_pos, increment)
 
-            try:
-                if coordinates[new_pos[0]][new_pos[1]] == "#":
-                    break
-                elif coordinates[new_pos[0]][new_pos[1]] == " ":
-                    assert False
-            except:
-                print(new_pos, " from ",  position)
-                coordinates[new_pos[0]][new_pos[1]] = "@"
-                coordinates[position[0]][position[1]] = "@"
-
-                print_coord()
-                print(new_pos)
-                raise Exception()
-        
             
+            if coordinates[new_pos[0]][new_pos[1]] == "#":
+                break
+        
             increment = new_inc
             c_inc = COMPAS.index(increment)
             position = new_pos
             coordinates[position[0]][position[1]] = DIRS[c_inc]
-            #print_coord()
+            
         
-        #print_coord()
-        if rot == "R":
+        if rotation == "R":
             c_inc = (c_inc+1) % 4
-        elif rot == "L":
+        elif rotation == "L":
             c_inc = (c_inc-1) % 4
 
         increment = COMPAS[c_inc]
@@ -297,7 +166,3 @@ with open("input.txt") as f:
 
     result = 1000 * (position[0]+1) + 4 * (position[1]+1) + COMPAS.index(increment)
     print(result)
-
-#print_coord()
-
-    
