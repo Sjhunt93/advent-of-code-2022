@@ -35,6 +35,8 @@ https://nim-lang.org/
 https://regex101.com/
 https://ziglang.org/
 https://odin-lang.org/
+https://ocaml.org/
+
 
 # Learnings
 
@@ -43,3 +45,4 @@ In C types matter so much more than you can imagine, at least an int is an int a
 Lua is kinda odd, I cant see what advantage is has over python or ruby. The fact it has no += is really anyoing
 
 Consider writing tests before staring with some solutions. Day 22 was a good example of this.
+
