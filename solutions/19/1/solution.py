@@ -63,13 +63,13 @@ def get_max(time: int, resources: list, robots: list, max_resources: list, costs
 
     # assert s < 256
     #key = (time << 13) | ((new_robot+1) << 9) | s
-    key = tuple([time, new_robot, *resources, *robots ])
+    key = tuple([*resources, *robots, time, new_robot])
     
     if key in cache:
         return cache[key]
 
-    # if time not in best:
-    #     best[time] = 0
+    if time not in best:
+        best[time] = 0
 
         #geodes collected + geode robots * time remaining + T(time remaining) <= best total geodes found so far.
 
@@ -87,12 +87,12 @@ def get_max(time: int, resources: list, robots: list, max_resources: list, costs
     if time == MAX_TIME:
         return resources[GEODE]
 
-    # if resources[GEODE] > best[time]:
-    #     best[time] = resources[GEODE]
-    # else:
-    #     tremaing = (MAX_TIME-time)
-    #     if (resources[GEODE] + (robots[GEODE] * tremaing) + o[tremaing]) <= best[time] and best[time] != 0:
-    #         return 0    
+    if resources[GEODE] > best[time]:
+        best[time] = resources[GEODE]
+    else:
+        tremaing = (MAX_TIME-time)
+        if (resources[GEODE] + (robots[GEODE] * tremaing) + o[tremaing]) <= best[time] and best[time] != 0:
+            return 0    
 
     # lay over from last turn
     if new_robot != -1:
